@@ -90,7 +90,7 @@ DATABASES = {
         'USER':env("User"),
         'PASSWORD':env("Password"),
         'HOST':env("Host"),
-        'PORT':env("Port)
+        'PORT':env("Port")
     }
 }
 
