@@ -90,7 +90,12 @@ DATABASES = {
         'USER':env("User"),
         'PASSWORD':env("PASSWORD"),
         'HOST':env("Host"),
-        'PORT':env("Port")
+        'PORT':env("Port"),
+         'OPTIONS': {
+            "ssl": {
+                "ca": "/etc/ssl/certs/ca-certificates.crt"
+            }
+        }
     }
 }
 
