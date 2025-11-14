@@ -93,7 +93,7 @@ DATABASES = {
         'PORT':env("Port"),
          'OPTIONS': {
             "ssl": {
-                "ca": "/etc/ssl/certs/ca-certificates.crt"
+                'ca': str(BASE_DIR / "ca.pem"),
             }
         }
     }
