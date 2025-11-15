@@ -165,13 +165,13 @@ CSRF_COOKIE_SECURE = True
  
 # SESSION_COOKIE_DOMAIN = "127.0.0.1"
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "vineethnalla12@gmail.com"
 EMAIL_HOST_PASSWORD = "txhx oakv uwhy dopn"  # Use App Password, not your normal password
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = "noreply@example.com"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
