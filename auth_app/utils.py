@@ -2,7 +2,7 @@ import random
 from django.core.mail import send_mail
 from .models import OTP
 import resend
-
+from django.conf import settings
 
 def generate_and_send_otp(user_email):
     code = f"{random.randint(100000, 999999):06d}"
@@ -13,7 +13,7 @@ def generate_and_send_otp(user_email):
     #     from_email='vineethnalla12@gmail.com',
     #     recipient_list=[user_email]
     # )
-    resend.api_key = "re_2cf9if6X_N8njHMSAgU26xkBriq3FFbFk"
+    resend.api_key = f"{settings.RENDER_KEY}"
 
     r = resend.Emails.send({
             "from": "YourApp <onboarding@resend.dev>",
