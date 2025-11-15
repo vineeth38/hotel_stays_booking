@@ -143,11 +143,12 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://hotel-stays-booking.onrender.com"
 ]
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "https://hotel-stays-booking.onrender.com",
+    "hotel-stays-booking.onrender.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
