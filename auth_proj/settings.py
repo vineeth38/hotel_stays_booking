@@ -142,7 +142,8 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "https://hotel-stays-booking.onrender.com"
+    "https://hotel-stays-booking.onrender.com",
+    "https://imaginative-naiad-b1a832.netlify.app"
 ]
 ALLOWED_HOSTS = [
     "localhost",
