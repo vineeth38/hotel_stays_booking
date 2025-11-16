@@ -143,17 +143,19 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://hotel-stays-booking.onrender.com",
-    "https://imaginative-naiad-b1a832.netlify.app"
+    "https://hotel-stays-bookings.vercel.app",
 ]
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "hotel-stays-booking.onrender.com",
+    "https://hotel-stays-bookings.vercel.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://hotel-stays-booking.onrender.com",
     "http://localhost:5173",
+    "https://hotel-stays-bookings.vercel.app",
 ]
 SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = 'None'
