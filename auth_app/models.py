@@ -49,18 +49,6 @@ class Users(AbstractBaseUser):
 #     password = models.CharField(max_length=256,null=False)
 
 
-class OTP(models.Model):
-    email = models.EmailField()
-    code = models.CharField(max_length=6)
-    name = models.CharField(max_length=100, null=True, blank=True)
-    city = models.CharField(max_length=100, null=True, blank=True)
-    mobile = models.CharField(max_length=15, null=True, blank=True)
-    password = models.CharField(max_length=128, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-    def is_valid(self):
-        return self.created_at >= timezone.now() - timedelta(minutes=10)
 
 class Booking(models.Model):
     user = models.ForeignKey(
