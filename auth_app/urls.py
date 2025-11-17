@@ -3,7 +3,7 @@ from .import views
 urlpatterns=[
     path("",view=views.sample),
     path("Signup/",view=views.Signup),
-    path("verifyOtp/",view=views.VerifyOTP),
+    # path("verifyOtp/",view=views.VerifyOTP),
     path("login/",view=views.login),
     path("logout/",view=views.logout),
     path("booking/create/",view=views.create_booking),
