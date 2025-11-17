@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework import status
 from django.http import HttpResponse,JsonResponse
 from .serializers import SignupSerializer,VerifySerializer,BookingSSerializer
-from .models import Users,OTP,Booking
-from .utils import generate_and_send_otp
+from .models import Users,Booking
+# from .utils import generate_and_send_otp
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.tokens import AccessToken
@@ -44,20 +44,54 @@ def Signup(request):
                 )
 
             # save data temporarily in OTP table
-            OTP.objects.filter(email=email).delete()
+            # OTP.objects.filter(email=email).delete()
             pswd = validated_data['password'].encode('utf-8')
             salt=bcrypt.gensalt(12)
             hashed_pswd= bcrypt.hashpw(pswd,salt).decode("utf-8")
-            otp_instance = OTP.objects.create(
-                email=email,
-                code=generate_and_send_otp(email),
-                name=validated_data['name'],
-                city=validated_data['city'],
-                mobile=validated_data['mobile'],
-                password=hashed_pswd,
+            user = Users.objects.create(
+            email=email,
+            name=validated_data['name'],
+            city=validated_data['city'],
+            mobile=validated_data['mobile'],
+            password=hashed_pswd
             )
 
-            return JsonResponse({'message': 'OTP sent to email'})
+            user_details= {
+            "id":user.id,
+            "email":user.email,
+            "name":user.name,
+            "logged_in":True
+             }
+            print(user.email,user.name)
+            print(user.__dict__)
+            # jwt_token=jwt.encode(user_details,SECRET_KEY,"HS256")
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+            response = JsonResponse({
+            "message": "Registered successfully",
+            "access": access_token,
+            "refresh": str(refresh),
+            "user": user_details
+            })
+            response.set_cookie(
+            key="access",
+            value=access_token,
+            max_age=60 * 15,  # 15 minutes
+            httponly=True,
+            secure=False,     # True in production
+            samesite="Lax"
+            )
+            response.set_cookie(
+            key="refresh",
+            value=str(refresh),
+            max_age=60 * 60 * 24 * 7,  # 7 days
+            httponly=True,
+            secure=False,              # True in production
+            samesite="Lax"
+            )
+            return response
+
+            # return JsonResponse({'message': 'OTP sent to email'})
 
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=status.HTTP_400_BAD_REQUEST)
@@ -88,88 +122,7 @@ def Signup(request):
     #     )
 
     #     return JsonResponse({'message': 'OTP sent to email'})
-@csrf_exempt
-def VerifyOTP(request):
-    print("✅ Django reached VerifyOTP view")
-    if request.method != "POST":
-        return JsonResponse({'error': 'Only POST allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    if request.method != "POST":
-        return JsonResponse({'error': 'Only POST allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-    try:
-        data = json.loads(request.body)
-        print("📦 Received data:", data)
-    except Exception as e:
-        print("❌ JSON decode failed:", e)
-        return JsonResponse({'error': 'Invalid JSON'}, status=status.HTTP_400_BAD_REQUEST)
-
-    serializer = VerifySerializer(data=data)
-    if not serializer.is_valid():
-        print("❌ Serializer errors:", serializer.errors)
-        return JsonResponse({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-    validated_data = serializer.validated_data
-    print("✅ Serializer valid, validated_data:", validated_data)
-    validated_data = serializer.validated_data
-    email = validated_data['email'].lower()
-    otp_code = validated_data['otp']
-
-    # Get latest OTP for this email
-    otp = OTP.objects.filter(email=email, code=otp_code).order_by('-created_at').first()
-    print(otp)
-    if not otp or not otp.is_valid():
-        return JsonResponse({'message': 'OTP did not match or expired'}, status=status.HTTP_400_BAD_REQUEST)
-    # print(request.session['pending_password'])
-    # password= request.session['pending_password'].encode("utf-8")
-    # salt=bcrypt.gensalt(12)
-    # hashed_pswd= bcrypt.hashpw(password,salt).decode("utf-8")
-    # print(hashed_pswd)
-    # Create user now
-    user = Users.objects.create(
-        email=email,
-        name=otp.name,
-        city=otp.city,
-        mobile=otp.mobile,
-        password=otp.password
-    )
-
-    # Delete used OTPs
-    OTP.objects.filter(email=email).delete()
-    user_details= {
-        "id":user.id,
-        "email":user.email,
-        "name":user.name,
-        "logged_in":True
-    }
-    print(user.email,user.name)
-    print(user.__dict__)
-    # jwt_token=jwt.encode(user_details,SECRET_KEY,"HS256")
-    refresh = RefreshToken.for_user(user)
-    access_token = str(refresh.access_token)
-    response = JsonResponse({
-        "message": "Verified successfully",
-        "access": access_token,
-        "refresh": str(refresh),
-        "user": user_details
-    })
-    response.set_cookie(
-        key="access",
-        value=access_token,
-        max_age=60 * 15,  # 15 minutes
-        httponly=True,
-        secure=False,     # True in production
-        samesite="Lax"
-    )
-    response.set_cookie(
-        key="refresh",
-        value=str(refresh),
-        max_age=60 * 60 * 24 * 7,  # 7 days
-        httponly=True,
-        secure=False,              # True in production
-        samesite="Lax"
-    )
-    return response
     # refresh = RefreshToken.for_user(user_details)
     # response = JsonResponse({'message': 'Verified successfully','token': jwt_token,'user': user_details}) 
     # response.set_cookie(
