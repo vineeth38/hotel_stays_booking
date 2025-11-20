@@ -144,6 +144,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://hotel-stays-booking.onrender.com",
     "https://hotel-stays-bookings.vercel.app",
     "https://hotel-stays-bookings-uslg.vercel.app",
+   "https://hotel-stays-bookings-9zue1644o-vineeths-projects-7fcf613e.vercel.app/",
 ]
 ALLOWED_HOSTS = [
     "localhost",
@@ -151,6 +152,7 @@ ALLOWED_HOSTS = [
     "hotel-stays-booking.onrender.com",
     "https://hotel-stays-bookings.vercel.app",
     "https://hotel-stays-bookings-uslg.vercel.app",
+    "https://hotel-stays-bookings-9zue1644o-vineeths-projects-7fcf613e.vercel.app/",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -158,6 +160,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "https://hotel-stays-bookings.vercel.app",
     "https://hotel-stays-bookings-uslg.vercel.app",
+    "https://hotel-stays-bookings-9zue1644o-vineeths-projects-7fcf613e.vercel.app/"
 ]
 SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = 'None'
